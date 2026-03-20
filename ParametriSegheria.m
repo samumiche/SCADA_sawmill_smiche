@@ -4,7 +4,9 @@ clc;
 
 %% Legno
 %Dt = 350; % Diametro tronco [mm]
-h = 70; % spessore per M1 [mm]
+h1 = 70; % spessore per M1 [mm]
+h2 = 18; 
+n_sottili = 4;
 w = 50; % spessore per M2 [mm]
 Mag_legno = [0 1 5 2 4 3]; % tipologia di legno [0 randi([1 5],1,10)] per vettore con valori randomici
 Mag_D = [0 430 320 260 230 540]; % diametro del tronco
