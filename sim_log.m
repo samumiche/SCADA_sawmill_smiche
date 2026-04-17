@@ -1,51 +1,53 @@
-%% VISUALIZZAZIONE MAGAZZINO
-
-
-% Carica i dati (assumendo che si chiamino 'out.MagazzinoStorico')
+close all
+% Carica i dati dal log di Simulink
 data = out.Magazzino_log.Data; 
 time = out.Magazzino_log.Time;
+[H_dim, L_dim, T] = size(data); 
 
-[H, L, T] = size(data);
+% 1. CREAZIONE ETICHETTE PERSONALIZZATE
+% Creiamo le griglie basandoci sui VALORI degli indici forniti
+[L_grid, H_grid] = meshgrid(l_index, h_index);
 
-% "Appiattiamo" sia i dati che i target per il grafico 2D
-data_flat = reshape(data, H*L, T); 
-target_flat = reshape(target_matrice, H*L, 1); 
+% Appiattiamo seguendo l'ordine di reshape di MATLAB (colonna per colonna)
+data_flat = reshape(data, H_dim*L_dim, T); 
+target_flat = reshape(target_matrice, H_dim*L_dim, 1); 
 
-% 2. Setup Grafico
-figure('Color', 'w', 'Position', [100, 100, 900, 600]);
+% Generiamo le stringhe: "H:70, L:30", ecc.
+tick_labels = arrayfun(@(h, l) sprintf('%d X %d', h, l), H_grid(:), L_grid(:), 'UniformOutput', false);
+
+% 2. SETUP GRAFICO
+figure('Color', 'w', 'Position', [100, 100, 1000, 600]);
 hBar = bar(data_flat(:,1)); 
-grid on;
-hold on;
+grid on; hold on;
 
-% Aggiungiamo i marker del target (pallini rossi sopra ogni barra)
-hTarget = plot(1:H*L, target_flat, 'ro', 'MarkerFaceColor', 'r');
+% Applicazione etichette reali
+set(gca, 'XTick', 1:H_dim*L_dim, ...
+         'XTickLabel', tick_labels, ...
+         'XTickLabelRotation', 45, ...
+         'FontSize', 9);
 
-ylim([0, max(target_flat) + 10]);
-ylabel('Numero Assi');
-xlabel('Indice Sezione (H x L)');
-title('Monitoraggio Produzione e Raggiungimento Target');
+hTarget = plot(1:H_dim*L_dim, target_flat, 'ro', 'MarkerFaceColor', 'r', 'DisplayName', 'Target');
+ylim([0, max(target_flat) + 20]);
+ylabel('Quantità Assi');
+xlabel('Specifiche Sezione (Altezza H x Larghezza L)');
+title('Monitoraggio Magazzino per Tipologia Prodotto');
 
-% Definiamo i colori
-color_working = [0 0.447 0.741]; % Blu (In produzione)
-color_finished = [0.466 0.674 0.188]; % Verde (Target raggiunto)
+% Colori 
+color_working = [0 0.447 0.741]; 
+color_finished = [0.466 0.674 0.188]; 
 
-% 3. Loop di Animazione
-for t = 1:50:length(time)
+% 3. LOOP DI ANIMAZIONE
+for t = 1:1:length(time)
     current_vals = data_flat(:,t);
-    
-    % Aggiorna le altezze delle barre
     set(hBar, 'YData', current_vals);
     
-    % Logica del colore: crea una matrice di colori [N_sezioni x 3]
-    colors = repmat(color_working, H*L, 1);
-    
-    % Trova gli indici delle sezioni che hanno raggiunto o superato il target
+    colors = repmat(color_working, H_dim*L_dim, 1);
     idx_target_reached = current_vals >= target_flat;
     colors(idx_target_reached, :) = repmat(color_finished, sum(idx_target_reached), 1);
     
-    % Applica i colori alle barre
     set(hBar, 'FaceColor', 'flat', 'CData', colors);
-    
-    title(['Avanzamento al tempo: ', num2str(time(t), '%.1f'), ' s']);
+    title(['Stato Magazzino al tempo: ', num2str(time(t), '%.1f'), ' s']);
     drawnow limitrate;
 end
+
+
