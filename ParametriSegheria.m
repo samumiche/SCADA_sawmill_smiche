@@ -38,6 +38,10 @@ Mag_D3 = [0 randi([220 500], 1, 40)];
 kc = [0 35 40 50 55 90];
 Lt = 4; % lunghezza tronchi [m]
 
+%% Parametri Genereali 
+n_linee = 3;
+Imax = 500;
+
 %% Paremtri Macchina 1
 
 %Sega
@@ -49,8 +53,7 @@ Rs = 800; % raggio volani [mm]
 
 % Motore
 Kt = 2;
-i_id = 60;
-i_max = 100;
+% i_id = 60;
 Rm = 150; %[m]
 B = 0.05; %[Nm s/rad]
 Tatt = 4; %[Nm]
@@ -61,7 +64,7 @@ Tloss = Tatt+ Tdamp;
 %% Parametri Macchina 2
 
 % Threashold parallelo
-thrsh = 40;
+% thrsh = 40;
 
 %Sega
 t2 = 5; % spessore lama [mm]
@@ -72,8 +75,7 @@ Rc = 200; % raggio volani [mm]
 
 % Motore
 Kt2 = 5;
-i_id2 = 60;
-% i_max = 100;
+% i_id2 = 60;
 Rm2 = 50; %[m]
 B2 = 0.05; %[Nm s/rad]
 Tatt2 = 4; %[Nm]
