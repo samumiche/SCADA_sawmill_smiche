@@ -3,7 +3,7 @@ close all
 data = out.Magazzino_log.Data; 
 time = out.Magazzino_log.Time;
 
-dTa = 10; % step per velocizzare l'animazione;
+dTa = 10; % step per velocizzare animazione;
 
 time_new = [time; time(end)*ones(dTa,1)]; % solo per loop di animazione (altrimenti con step troppo alto non comleta il magazzino)
 [H_dim, L_dim, T] = size(data); 

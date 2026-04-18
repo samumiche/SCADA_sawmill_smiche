@@ -3,7 +3,7 @@ close all;
 clc;
 
 %% Simulation
-Tsim = 2000;
+Tsim = 1800;
 dT = 0.025;
 
 %% Legno
