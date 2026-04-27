@@ -14,8 +14,8 @@ n_sottili = 4;
 w = 50; % spessore per M2 [mm]
 
 % A linea singola
-Mag_legno = [0 1 5 2 4 3 1 5 2 4 3 1 5 2 4 3 1 5 2 4 3 1 5 2 4 3 1 5 2 4 3]; % tipologia di legno [0 randi([1 5],1,10)] per vettore con valori randomici
-Mag_D = [0 430 320 260 230 540 430 320 260 230 540 430 320 260 230 540 430 320 260 230 540 430 320 260 230 540 430 320 260 230 540]; % diametro del tronco
+Mag_legno = [0 randi([1 5], 1, 150)]; % tipologia di legno [0 randi([1 5],1,10)] per vettore con valori randomici
+Mag_D =[0 randi([220 500], 1, 150)]; % diametro del tronco
 
 % Linea 1
 % Mag_legno1 = [0 1 5 2 4 3 1 3 5 4 2 2 3 5 3 4 1 1 3 4 2]; % tipologia di legno [0 randi([1 5],1,10)] per vettore con valori randomici
@@ -35,12 +35,16 @@ Mag_D2 = [0 randi([220 500], 1, 40)];
 Mag_legno3 = [0 randi([1 5], 1, 40)];
 Mag_D3 = [0 randi([220 500], 1, 40)];
 
-kc = [0 35 40 50 55 90];
 Lt = 4; % lunghezza tronchi [m]
+
+% [ 0, abete, pino, larice, faggio, quercia]
+kc = [0, 25, 30, 35, 50, 70];
+rho = [0, 450, 520, 590, 710, 780]*1e-9;
 
 %% Parametri Genereali 
 n_linee = 3;
-Imax = 500;
+V_mean1 = 0.75;
+V_mean23 = 1;
 
 %% Paremtri Macchina 1
 
@@ -48,40 +52,32 @@ Imax = 500;
 t = 1.8; % spessore lama [mm]
 s = 0.5*t; % stradatura [mm]
 b = t + 2*s;
-omega = 50; % velocità angolare sega [rad/s]
+omega_ref1 = 50; % velocità angolare sega [rad/s]
 Rs = 800; % raggio volani [mm]
 
+
 % Motore
-Kt = 2;
-% i_id = 60;
+J1 = 8*1e6; % [mm^2]
+Kt = 10000;
 Rm = 150; %[m]
-B = 0.05; %[Nm s/rad]
-Tatt = 4; %[Nm]
 SR = Rs/Rm;
-Tdamp = B*omega*SR;
-Tloss = Tatt+ Tdamp;
 
 %% Parametri Macchina 2
 
-% Threashold parallelo
-% thrsh = 40;
 
 %Sega
 t2 = 5; % spessore lama [mm]
 s2 = 0.5*t2; % stradatura [mm]
 b2 = t2 + 2*s2;
-omega2 = 3000*(2*pi/60); % velocità angolare sega [rad/s]
+omega_ref2 = 3000*(2*pi/60); % velocità angolare sega [rad/s]
 Rc = 200; % raggio volani [mm]
 
+
 % Motore
-Kt2 = 5;
-% i_id2 = 60;
+J2 = 0.9*1e6; % [mm^2]
+Kt2 = 4500;
 Rm2 = 50; %[m]
-B2 = 0.05; %[Nm s/rad]
-Tatt2 = 4; %[Nm]
 SR2 = Rc/Rm2;
-Tdamp2 = B2*omega2*SR2;
-Tloss2 = Tatt2+ Tdamp2;
 
 %% PRODOTTI FINALI
 
@@ -95,7 +91,7 @@ l_index = [20, 30, 40, 50];
 %                   40, 200, 70;
 %                   50, 25, 55];
 
-target_matrice = randi([20, 30], length(h_index), length(l_index));
+target_matrice = randi([50, 100], length(h_index), length(l_index));
 
 % target_matrice = [600, 100;
 %                   100, 100];
@@ -117,15 +113,3 @@ deficit = target_matrice;
 
 
 
-
-%% prova vettore
-% clear all;
-
-% deficit = [1 5 3;
-%            8 2 4;
-%            10 3 6];
-% 
-% [max, idx] = sort(deficit(:), 'descend');
-% 
-% second_linear_idx = idx(2);
-% [row, col] = ind2sub(size(deficit), second_linear_idx);
