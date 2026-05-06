@@ -7,11 +7,7 @@ Tsim = 1800;
 dT = 0.025;
 
 %% Legno
-%Dt = 350; % Diametro tronco [mm]
-h1 = 70; % spessore per M1 [mm]
-h2 = 18; 
 n_sottili = 4;
-w = 50; % spessore per M2 [mm]
 
 % A linea singola
 Mag_legno = [0 randi([1 5], 1, 150)]; % tipologia di legno [0 randi([1 5],1,10)] per vettore con valori randomici
