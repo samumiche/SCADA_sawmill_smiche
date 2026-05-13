@@ -7,7 +7,6 @@ Tsim = 1800;
 dT = 0.025;
 
 %% Legno
-n_sottili = 4;
 
 % A linea singola
 Mag_legno = [0 randi([1 5], 1, 150)]; % tipologia di legno [0 randi([1 5],1,10)] per vettore con valori randomici
@@ -61,7 +60,7 @@ SR = Rs/Rm;
 %% Parametri Macchina 2
 
 
-%Sega
+% Sega
 t2 = 5; % spessore lama [mm]
 s2 = 0.5*t2; % stradatura [mm]
 b2 = t2 + 2*s2;
@@ -87,7 +86,7 @@ l_index = [20, 30, 40, 50];
 %                   40, 200, 70;
 %                   50, 25, 55];
 
-target_matrice = randi([50, 100], length(h_index), length(l_index));
+target_matrice = randi([20, 40], length(h_index), length(l_index));
 
 % target_matrice = [600, 100;
 %                   100, 100];
